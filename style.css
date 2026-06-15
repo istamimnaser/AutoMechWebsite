@@ -627,7 +627,8 @@ section { padding: 88px 20px; }
   flex-direction: column;
   transition: transform .25s cubic-bezier(.22,1,.36,1),
               box-shadow .25s ease,
-              border-color .25s ease;
+              border-color .25s ease,
+              opacity .65s cubic-bezier(.22,1,.36,1);
   position: relative;
 }
 /* gradient border on hover via pseudo */

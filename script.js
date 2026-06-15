@@ -40,9 +40,19 @@ window.initWebsite = function() {
       el.classList.add('revealed');
       revealObs.unobserve(el);
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
 
   allReveal.forEach(el => revealObs.observe(el));
+
+  // Safety net: force-reveal any elements the observer missed after 800ms
+  setTimeout(() => {
+    allReveal.forEach(el => {
+      if (!el.classList.contains('revealed')) {
+        el.style.transitionDelay = '0s';
+        el.classList.add('revealed');
+      }
+    });
+  }, 800);
 
   /* ── Button Ripple ── */
   document.querySelectorAll('.btn, .event-btn').forEach(btn => {
