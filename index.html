@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoMech 2.0 — IUT Automobile Society Motor Festival</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red-lt:  #ff3d50;
+      --red:     #e01c2c;
+      --red-dk:  #8c0d1a;
+      --grad:    linear-gradient(135deg, #ff3d50 0%, #e01c2c 50%, #8c0d1a 100%);
+      --grad-h:  linear-gradient(135deg, #e83040 0%, #c0101e 50%, #6e0814 100%);
+      --grad-90: linear-gradient(90deg,  #ff3d50 0%, #e01c2c 50%, #8c0d1a 100%);
+      --grad-v:  linear-gradient(180deg, #ff3d50 0%, #8c0d1a 100%);
+      --white:   #f5f5f5;
+      --black:   #0a0a0a;
+      --grey:    #181818;
+      --grey2:   #252525;
+      --grey3:   #333;
+      --muted:   #888;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ══ UTILITY ══ */
+    .grad-text {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ══ LOGO PLACEHOLDERS ══ */
+    .logo-ph {
+      border: 1.5px dashed rgba(224,28,44,.45);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .logo-ph svg { opacity: .35; flex-shrink: 0; }
+
+    .logo-ph-nav {
+      height: 38px;
+      min-width: 130px;
+      padding: 0 14px;
+      flex-direction: row;
+      gap: 7px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: .08em;
+      color: rgba(255,255,255,.5);
+    }
+
+    .logo-ph-society {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 28px;
+      padding: 12px;
+    }
+
+    .logo-ph-hero {
+      width: min(520px, 90vw);
+      height: clamp(120px, 20vw, 200px);
+      margin: 0 auto;
+      padding: 20px;
+      border-radius: 12px;
+      font-size: .8rem;
+    }
+
+    /* ══ NAV ══ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 64px;
+      background: rgba(10,10,10,.94);
+      backdrop-filter: blur(10px);
+    }
+    nav::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,61,80,.6) 30%, rgba(224,28,44,.8) 50%, rgba(140,13,26,.6) 70%, transparent 100%);
+    }
+
+    .nav-logo-link { text-decoration: none; display: flex; align-items: center; }
+
+    /* When user adds the real logo, keep just: <img src="logo.png" alt="AutoMech 2.0" class="nav-logo-img"> */
+    .nav-logo-img { height: 38px; width: auto; display: block; }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .82rem;
+      font-weight: 500;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      background: var(--grad) !important;
+      color: var(--white) !important;
+      padding: 9px 22px !important;
+      border-radius: 5px;
+      font-weight: 700 !important;
+      transition: opacity .2s, transform .15s !important;
+    }
+    .nav-cta:hover { opacity: .88; transform: translateY(-1px); color: var(--white) !important; }
+
+    /* Hamburger */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      z-index: 201;
+    }
+    .nav-burger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform .25s, opacity .25s;
+    }
+    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ══ HERO ══ */
+    #hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 20px 64px;
+      background:
+        radial-gradient(ellipse 80% 55% at 50% 55%, rgba(224,28,44,.14) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 50% 70%, rgba(255,61,80,.08) 0%, transparent 60%),
+        var(--black);
+      position: relative;
+    }
+
+    .hero-sub {
+      margin-top: 20px;
+      font-size: clamp(.85rem, 2.2vw, 1.1rem);
+      color: var(--muted);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .hero-date-pill {
+      margin-top: 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--grey);
+      border: 1px solid var(--grey2);
+      border-radius: 8px;
+      padding: 11px 24px;
+      font-size: .95rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+    }
+    .hero-date-pill .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--grad);
+      flex-shrink: 0;
+    }
+
+    .hero-actions {
+      margin-top: 36px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ══ BUTTONS ══ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: .88rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: transform .15s, box-shadow .15s, opacity .15s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: var(--grad);
+      color: var(--white);
+      box-shadow: 0 4px 28px rgba(224,28,44,.38);
+    }
+    .btn-primary:hover { background: var(--grad-h); box-shadow: 0 6px 36px rgba(224,28,44,.55); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid rgba(255,255,255,.22);
+    }
+    .btn-outline:hover { border-color: rgba(255,255,255,.65); }
+
+    /* ══ SECTIONS ══ */
+    section { padding: 88px 20px; }
+
+    .section-label {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: inline-block;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      letter-spacing: .04em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      max-width: 500px;
+      font-size: .92rem;
+    }
+
+    .section-header { margin-bottom: 52px; }
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    .divider {
+      width: 52px; height: 3px;
+      background: var(--grad);
+      margin: 14px 0 18px;
+      border-radius: 2px;
+    }
+
+    /* ══ EVENTS ══ */
+    #events { background: var(--black); }
+
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .event-card {
+      background: var(--grey);
+      border: 1px solid var(--grey2);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform .22s, box-shadow .22s;
+      position: relative;
+    }
+    .event-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      padding: 1px;
+      background: var(--grad);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity .25s;
+      pointer-events: none;
+    }
+    .event-card:hover::before { opacity: 1; }
+    .event-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(224,28,44,.15); }
+
+    .event-img {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--grey2);
+      overflow: hidden;
+    }
+    .event-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .event-img-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: .78rem;
+      letter-spacing: .06em;
+    }
+    .event-img-placeholder svg { opacity: .3; }
+
+    .event-tag {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: var(--grad);
+      color: var(--white);
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 4px;
+    }
+
+    .event-body { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 11px; }
+
+    .event-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.55rem;
+      letter-spacing: .04em;
+    }
+
+    .event-meta { display: flex; flex-wrap: wrap; gap: 12px; }
+    .event-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .76rem;
+      color: var(--muted);
+    }
+    .event-meta-item svg { flex-shrink: 0; color: var(--red-lt); }
+
+    .event-desc { font-size: .86rem; color: #aaa; flex: 1; }
+
+    .event-actions { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+
+    .event-btn {
+      flex: 1;
+      min-width: 120px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: opacity .15s, transform .15s;
+    }
+    .event-btn:hover { transform: translateY(-1px); opacity: .88; }
+
+    .event-btn-reg { background: var(--grad); color: var(--white); }
+    .event-btn-rules {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,.18);
+      color: var(--white);
+    }
+    .event-btn-rules:hover { border-color: rgba(255,255,255,.55); opacity: 1; }
+
+    /* ══ GALLERY ══ */
+    #gallery { background: var(--grey); padding: 88px 20px; }
+
+    .gallery-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .gallery-item {
+      aspect-ratio: 4/3;
+      background: var(--grey2);
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gallery-item:hover img { transform: scale(1.04); transition: transform .3s; }
+    .gallery-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: .72rem;
+      letter-spacing: .06em;
+    }
+
+    /* ══ SPONSORS ══ */
+    #sponsors { background: var(--black); }
+
+    .sponsors-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .sponsor-card {
+      background: var(--grey);
+      border: 1px solid var(--grey2);
+      border-radius: 10px;
+      width: 176px; height: 88px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color .2s, box-shadow .2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .sponsor-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--grad);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .25s;
+    }
+    .sponsor-card:hover::after { transform: scaleX(1); }
+    .sponsor-card:hover { border-color: rgba(224,28,44,.4); box-shadow: 0 4px 20px rgba(224,28,44,.1); }
+    .sponsor-card img { max-width: 120px; max-height: 56px; object-fit: contain; filter: grayscale(1) brightness(1.5); transition: filter .2s; }
+    .sponsor-card:hover img { filter: none; }
+    .sponsor-placeholder { font-size: .7rem; color: var(--muted); letter-spacing: .07em; text-align: center; padding: 8px; }
+
+    .sponsor-tier {
+      width: 100%;
+      text-align: center;
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      margin: 32px 0 16px;
+    }
+    .sponsor-tier:first-child { margin-top: 0; }
+    .tier-title { color: var(--red-lt); }
+    .tier-gold  { color: #d4a017; }
+    .tier-silver { color: #a0a0a0; }
+
+    /* ══ CONNECT ══ */
+    #connect { background: var(--grey); }
+
+    .connect-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 18px;
+    }
+
+    .connect-card {
+      background: var(--grey2);
+      border: 1px solid var(--grey3);
+      border-radius: 12px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform .2s, box-shadow .2s;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+    .connect-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--grad);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .25s;
+    }
+    .connect-card:hover::before { transform: scaleX(1); }
+    .connect-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,.35); }
+
+    .connect-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(255,61,80,.18) 0%, rgba(140,13,26,.12) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .connect-icon svg {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: var(--red);
+    }
+
+    .connect-label {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .connect-value { font-size: .96rem; font-weight: 600; }
+    .connect-action {
+      font-size: .76rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: inline-block;
+    }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: var(--black);
+      border-top: 1px solid var(--grey2);
+      padding: 48px 20px 36px;
+      text-align: center;
+    }
+    .footer-logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    /* Replace div.footer-logo-ph with <img src="automech-logo.png" alt="AutoMech 2.0" class="footer-logo-img"> */
+    .footer-logo-img { height: 52px; width: auto; }
+    .footer-logo-ph {
+      height: 52px;
+      min-width: 180px;
+      border: 1.5px dashed rgba(224,28,44,.35);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 18px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: .08em;
+      color: rgba(255,255,255,.3);
+    }
+    .footer-sub { color: var(--muted); font-size: .8rem; margin-top: 4px; letter-spacing: .06em; }
+    .footer-divider {
+      width: 40px; height: 2px;
+      background: var(--grad);
+      margin: 20px auto;
+      border-radius: 2px;
+    }
+    .footer-copy { color: #555; font-size: .72rem; }
+
+    /* ══ MOBILE MENU OVERLAY ══ */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 64px; left: 0; right: 0; bottom: 0;
+      background: rgba(10,10,10,.98);
+      backdrop-filter: blur(12px);
+      z-index: 199;
+      flex-direction: column;
+      padding: 32px 24px;
+      gap: 0;
+      overflow-y: auto;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      display: block;
+      color: var(--white);
+      text-decoration: none;
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--grey2);
+      transition: color .2s;
+    }
+    .mobile-nav a:hover { color: var(--red-lt); }
+    .mobile-nav .mob-cta {
+      margin-top: 28px;
+      background: var(--grad);
+      color: var(--white) !important;
+      text-align: center;
+      padding: 18px !important;
+      border-radius: 8px;
+      border: none !important;
+      font-size: 1.1rem !important;
+    }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 900px) {
+      .gallery-strip { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none !important; }
+      .nav-burger { display: flex; }
+
+      #hero { padding: 88px 16px 56px; }
+
+      .events-grid { grid-template-columns: 1fr; }
+      .gallery-strip { grid-template-columns: repeat(2, 1fr); }
+
+      section { padding: 64px 16px; }
+      #gallery { padding: 64px 16px; }
+
+      .connect-grid { grid-template-columns: 1fr; }
+
+      .btn { padding: 13px 24px; font-size: .84rem; }
+      .hero-actions { flex-direction: column; align-items: stretch; max-width: 320px; margin-left: auto; margin-right: auto; }
+      .hero-actions .btn { text-align: center; justify-content: center; }
+
+      .logo-ph-hero { height: 100px; }
+      .logo-ph-society { width: 90px; height: 90px; }
+    }
+
+    @media (max-width: 480px) {
+      .gallery-strip { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .sponsor-card { width: 140px; height: 72px; }
+      .event-actions { flex-direction: column; }
+      .event-btn { min-width: unset; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════ -->
+<nav>
+  <a href="#hero" class="nav-logo-link">
+    <!--
+      LOGO: Replace the div below with your actual logo:
+      <img src="automech-logo.png" alt="AutoMech 2.0" class="nav-logo-img">
+    -->
+    <div class="logo-ph logo-ph-nav">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+      AutoMech 2.0
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#events">Events</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#sponsors">Sponsors</a></li>
+    <li><a href="#connect">Connect</a></li>
+    <li><a href="https://forms.google.com" target="_blank" class="nav-cta">Register Now</a></li>
+  </ul>
+
+  <button class="nav-burger" id="navBurger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#events"   onclick="closeMobileNav()">Events</a>
+  <a href="#gallery"  onclick="closeMobileNav()">Gallery</a>
+  <a href="#sponsors" onclick="closeMobileNav()">Sponsors</a>
+  <a href="#connect"  onclick="closeMobileNav()">Connect</a>
+  <a href="https://forms.google.com" target="_blank" class="mob-cta">Register Now</a>
+</div>
+
+<!-- ══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<section id="hero">
+
+  <!--
+    IUT AUTOMOBILE SOCIETY LOGO
+    Replace the div below with:
+    <img src="iut-autosoc-logo.png" alt="IUT Automobile Society">
+  -->
+  <div class="logo-ph logo-ph-society">
+    <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/></svg>
+    IUT Automobile Society Logo
+  </div>
+
+  <!--
+    AUTOMECH 2.0 LOGO
+    Replace the div below with:
+    <img src="automech2-logo.png" alt="AutoMech 2.0" style="max-height:200px; width:auto;">
+  -->
+  <div class="logo-ph logo-ph-hero">
+    <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>
+    AutoMech 2.0 Logo — Replace with actual logo image
+  </div>
+
+  <p class="hero-sub">The Motor Festival — Islamic University of Technology</p>
+
+  <div class="hero-date-pill">
+    <span class="dot"></span>
+    <!-- Replace TBD with actual date -->
+    TBD &nbsp;·&nbsp; IUT Campus, Gazipur
+  </div>
+
+  <div class="hero-actions">
+    <a href="https://forms.google.com" target="_blank" class="btn btn-primary">
+      <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15"/><path stroke-linecap="round" stroke-linejoin="round" d="M18 12H9m0 0l3-3m-3 3l3 3"/></svg>
+      Register Now
+    </a>
+    <a href="#events" class="btn btn-outline">Explore Events</a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     EVENTS
+═══════════════════════════════════════════ -->
+<section id="events">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">Competition</p>
+      <h2 class="section-title">Events</h2>
+      <div class="divider"></div>
+      <p class="section-desc">Push the limits in our flagship events. Each challenge tests a unique set of engineering and driving skills.</p>
+    </div>
+
+    <div class="events-grid">
+
+      <!-- ── RoboSoccer ── -->
+      <div class="event-card">
+        <div class="event-img">
+          <!-- Replace with: <img src="robosoccer-photo.jpg" alt="RoboSoccer"> -->
+          <div class="event-img-placeholder">
+            <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/></svg>
+            Photo from AutoMech 1.0
+          </div>
+          <span class="event-tag">RoboSoccer</span>
+        </div>
+        <div class="event-body">
+          <div class="event-name">RoboSoccer</div>
+          <div class="event-meta">
+            <span class="event-meta-item">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              TBD <!-- Replace with date -->
+            </span>
+            <span class="event-meta-item">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              TBD <!-- Replace with time -->
+            </span>
+          </div>
+          <p class="event-desc">Autonomous or RC-controlled robots go head-to-head in a custom soccer arena. Engineer, build, and dominate.</p>
+          <div class="event-actions">
+            <a href="https://forms.google.com" target="_blank" class="event-btn event-btn-reg">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+              Register
+            </a>
+            <a href="#" target="_blank" class="event-btn event-btn-rules">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              Rule Book
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SimSurge ── -->
+      <div class="event-card">
+        <div class="event-img">
+          <!-- Replace with: <img src="simsurge-photo.jpg" alt="SimSurge"> -->
+          <div class="event-img-placeholder">
+            <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/></svg>
+            Photo from AutoMech 1.0
+          </div>
+          <span class="event-tag">SimSurge</span>
+        </div>
+        <div class="event-body">
+          <div class="event-name">SimSurge</div>
+          <div class="event-meta">
+            <span class="event-meta-item">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              TBD
+            </span>
+            <span class="event-meta-item">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              TBD
+            </span>
+          </div>
+          <p class="event-desc">High-octane sim racing on professional-grade simulators. Set the fastest lap and claim the podium in the virtual world.</p>
+          <div class="event-actions">
+            <a href="https://forms.google.com" target="_blank" class="event-btn event-btn-reg">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+              Register
+            </a>
+            <a href="#" target="_blank" class="event-btn event-btn-rules">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              Rule Book
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Event Placeholder 3 ── -->
+      <div class="event-card">
+        <div class="event-img">
+          <!-- Replace with: <img src="event3-photo.jpg" alt="Event Name"> -->
+          <div class="event-img-placeholder">
+            <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/></svg>
+            Photo from AutoMech 1.0
+          </div>
+          <span class="event-tag">Event Name</span>
+        </div>
+        <div class="event-body">
+          <div class="event-name">Event Name</div>
+          <div class="event-meta">
+            <span class="event-meta-item">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              TBD
+            </span>
+            <span class="event-meta-item">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              TBD
+            </span>
+          </div>
+          <p class="event-desc">Event description goes here. Summarize the challenge, rules, and what participants compete for.</p>
+          <div class="event-actions">
+            <a href="https://forms.google.com" target="_blank" class="event-btn event-btn-reg">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+              Register
+            </a>
+            <a href="#" target="_blank" class="event-btn event-btn-rules">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              Rule Book
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Event Placeholder 4 ── -->
+      <div class="event-card">
+        <div class="event-img">
+          <!-- Replace with: <img src="event4-photo.jpg" alt="Event Name"> -->
+          <div class="event-img-placeholder">
+            <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/></svg>
+            Photo from AutoMech 1.0
+          </div>
+          <span class="event-tag">Event Name</span>
+        </div>
+        <div class="event-body">
+          <div class="event-name">Event Name</div>
+          <div class="event-meta">
+            <span class="event-meta-item">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              TBD
+            </span>
+            <span class="event-meta-item">
+              <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              TBD
+            </span>
+          </div>
+          <p class="event-desc">Event description goes here. Summarize the challenge, rules, and what participants compete for.</p>
+          <div class="event-actions">
+            <a href="https://forms.google.com" target="_blank" class="event-btn event-btn-reg">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+              Register
+            </a>
+            <a href="#" target="_blank" class="event-btn event-btn-rules">
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              Rule Book
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     GALLERY
+═══════════════════════════════════════════ -->
+<section id="gallery">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">AutoMech 1.0</p>
+      <h2 class="section-title">Last Year's Highlights</h2>
+      <div class="divider"></div>
+      <p class="section-desc">Relive the energy from our inaugural Motor Festival.</p>
+    </div>
+    <div class="gallery-strip">
+      <!-- Replace each .gallery-item content with: <img src="photo.jpg" alt="Caption"> -->
+      <div class="gallery-item"><div class="gallery-placeholder">Photo 1</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder">Photo 2</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder">Photo 3</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder">Photo 4</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder">Photo 5</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder">Photo 6</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder">Photo 7</div></div>
+      <div class="gallery-item"><div class="gallery-placeholder">Photo 8</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SPONSORS
+═══════════════════════════════════════════ -->
+<section id="sponsors">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">Powered By</p>
+      <h2 class="section-title">Our Sponsors</h2>
+      <div class="divider"></div>
+      <p class="section-desc">AutoMech 2.0 is made possible by the generous support of our partners.</p>
+    </div>
+
+    <p class="sponsor-tier tier-title">— Title Sponsor —</p>
+    <div class="sponsors-grid" style="margin-bottom: 40px;">
+      <div class="sponsor-card" style="width: 240px; height: 110px;">
+        <!-- <img src="title-sponsor-logo.png" alt="Title Sponsor"> -->
+        <span class="sponsor-placeholder">Title Sponsor Logo</span>
+      </div>
+    </div>
+
+    <p class="sponsor-tier tier-gold">— Gold Sponsors —</p>
+    <div class="sponsors-grid" style="margin-bottom: 40px;">
+      <div class="sponsor-card"><span class="sponsor-placeholder">Sponsor Logo</span></div>
+      <div class="sponsor-card"><span class="sponsor-placeholder">Sponsor Logo</span></div>
+      <div class="sponsor-card"><span class="sponsor-placeholder">Sponsor Logo</span></div>
+    </div>
+
+    <p class="sponsor-tier tier-silver">— Silver Sponsors —</p>
+    <div class="sponsors-grid">
+      <div class="sponsor-card"><span class="sponsor-placeholder">Sponsor Logo</span></div>
+      <div class="sponsor-card"><span class="sponsor-placeholder">Sponsor Logo</span></div>
+      <div class="sponsor-card"><span class="sponsor-placeholder">Sponsor Logo</span></div>
+      <div class="sponsor-card"><span class="sponsor-placeholder">Sponsor Logo</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CONNECT
+═══════════════════════════════════════════ -->
+<section id="connect">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">Stay In The Loop</p>
+      <h2 class="section-title">Connect With Us</h2>
+      <div class="divider"></div>
+      <p class="section-desc">Follow our pages, join the event, and reach out to the organizing team.</p>
+    </div>
+
+    <div class="connect-grid">
+
+      <a href="https://facebook.com/IUTAutoSoc" target="_blank" class="connect-card">
+        <div class="connect-icon">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        </div>
+        <div>
+          <p class="connect-label">Facebook Page</p>
+          <p class="connect-value">IUT Automobile Society</p>
+        </div>
+        <p class="connect-action">Visit Page →</p>
+      </a>
+
+      <a href="https://facebook.com/events/placeholder" target="_blank" class="connect-card">
+        <div class="connect-icon">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div>
+          <p class="connect-label">Facebook Event</p>
+          <p class="connect-value">AutoMech 2.0 — Official Event</p>
+        </div>
+        <p class="connect-action">Mark Interested →</p>
+      </a>
+
+      <a href="mailto:automech@iut-dhaka.edu" class="connect-card">
+        <div class="connect-icon">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <p class="connect-label">Email</p>
+          <p class="connect-value">automech@iut-dhaka.edu</p>
+        </div>
+        <p class="connect-action">Send a Message →</p>
+      </a>
+
+      <a href="tel:+880XXXXXXXXXX" class="connect-card">
+        <div class="connect-icon">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.12 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.46-.46a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        </div>
+        <div>
+          <p class="connect-label">Phone / WhatsApp</p>
+          <p class="connect-value">+880 — — — — — — —</p>
+        </div>
+        <p class="connect-action">Call or WhatsApp →</p>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer>
+  <div class="footer-logo-wrap">
+    <!--
+      FOOTER LOGO: Replace the div below with:
+      <img src="automech2-logo.png" alt="AutoMech 2.0" class="footer-logo-img">
+    -->
+    <div class="footer-logo-ph">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="opacity:.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+      AutoMech 2.0
+    </div>
+  </div>
+  <p class="footer-sub">IUT Automobile Society &nbsp;·&nbsp; Islamic University of Technology, Gazipur</p>
+  <div class="footer-divider"></div>
+  <p class="footer-copy">&copy; 2025 IUT Automobile Society. All rights reserved.</p>
+</footer>
+
+<script>
+  const burger   = document.getElementById('navBurger');
+  const mobileNav = document.getElementById('mobileNav');
+
+  burger.addEventListener('click', () => {
+    const open = mobileNav.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+
+  function closeMobileNav() {
+    mobileNav.classList.remove('open');
+    burger.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+</script>
+</body>
+</html>
