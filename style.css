@@ -1115,16 +1115,16 @@ section { padding: 88px 20px; }
 ══════════════════════════════════════════ */
 footer {
   background: var(--black);
-  border-top: 1px solid var(--grey2);
+  border-top: 1px solid var(--grey2); 
   padding: 48px 20px 36px;
   text-align: center;
 }
 .footer-logo-wrap { display: flex; justify-content: center; margin-bottom: 12px; }
-.footer-logo-img  { height: 52px; width: auto; }
+.footer-logo-img  { height: 2005px; width: auto; } /* 5x bigger */
 .footer-logo-ph {
-  height: 52px;
+  height: auto; /* Changed to auto to accommodate the larger image */
   min-width: 180px;
-  border: 1.5px dashed rgba(224,28,44,.3);
+  /* Removed dashed border */
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -1146,7 +1146,6 @@ footer {
   animation: grad-flow 4s ease infinite;
 }
 .footer-copy { color: #555; font-size: .72rem; }
-
 /* ══════════════════════════════════════════
     MOBILE NAV
 ══════════════════════════════════════════ */
@@ -1303,7 +1302,7 @@ footer {
 
 /* Race car SVG */
 .circuit-car {
-  width: 36px;
+  width: 28px;
   height: auto;
   filter: drop-shadow(0 0 8px rgba(255,61,80,.5));
   animation: car-idle .9s ease-in-out infinite alternate;
