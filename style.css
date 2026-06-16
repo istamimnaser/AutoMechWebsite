@@ -906,11 +906,11 @@ section { padding: 88px 20px; }
 .countdown {
   display: flex;
   align-items: center;
-  margin-top: 28px;
+  margin-top: 20px;
   background: var(--grey);
   border: 1px solid var(--grey2);
-  border-radius: 12px;
-  padding: 18px 28px;
+  border-radius: 10px;
+  padding: 10px 22px;
   gap: 4px;
   animation: fadeUp .7s ease 2s both;
 }
@@ -918,12 +918,12 @@ section { padding: 88px 20px; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 0 14px;
+  gap: 2px;
+  padding: 0 10px;
 }
 .count-num {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2rem, 6vw, 3.2rem);
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
   line-height: 1;
   background: linear-gradient(135deg, #ff3d50, #e01c2c, #8c0d1a, #ff3d50);
   background-size: 300% 100%;
@@ -943,10 +943,10 @@ section { padding: 88px 20px; }
 }
 .count-sep {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
   color: var(--red);
   line-height: 1;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   opacity: .65;
   animation: pulse-dot 1.2s ease infinite;
   flex-shrink: 0;
