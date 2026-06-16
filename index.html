@@ -68,10 +68,13 @@
       document.getElementById(section.id).innerHTML = html;
     }
 
-    // Load the isolated countdown into the main/hero section
-    const cdResponse = await fetch('countDown.html');
-    const cdHtml = await cdResponse.text();
-    document.getElementById('countdown-injector').innerHTML = cdHtml;
+    // Load the isolated countdown into the main/hero section (if element exists)
+    const cdInjector = document.getElementById('countdown-injector');
+    if (cdInjector) {
+      const cdResponse = await fetch('countDown.html');
+      const cdHtml = await cdResponse.text();
+      cdInjector.innerHTML = cdHtml;
+    }
 
     // Initialize all logic after DOM is fully constructed
     if (typeof initWebsite === 'function') {

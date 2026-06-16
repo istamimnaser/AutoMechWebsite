@@ -361,35 +361,8 @@ nav::after {
   background: var(--black);
 }
 
-/* animated background orbs */
-.hero-orb {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(80px);
-  animation: float 8s ease-in-out infinite;
-}
-.hero-orb-1 {
-  width: 500px; height: 500px;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(224,28,44,.12) 0%, transparent 70%);
-  animation-duration: 9s;
-}
-.hero-orb-2 {
-  width: 300px; height: 300px;
-  top: 30%; left: 60%;
-  background: radial-gradient(circle, rgba(255,61,80,.08) 0%, transparent 70%);
-  animation-duration: 12s;
-  animation-delay: -3s;
-}
-.hero-orb-3 {
-  width: 200px; height: 200px;
-  top: 65%; left: 25%;
-  background: radial-gradient(circle, rgba(140,13,26,.1) 0%, transparent 70%);
-  animation-duration: 10s;
-  animation-delay: -6s;
-}
+/* orbs hidden — road scene handles all atmosphere */
+.hero-orb { display: none; }
 
 /* one-shot racing stripe */
 .hero-stripe {
@@ -517,6 +490,58 @@ nav::after {
   flex-wrap: wrap;
   justify-content: center;
   animation: fadeUp .7s ease 2s both;
+}
+
+/* ── Hero animated title ── */
+.hero-big-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  text-align: center;
+}
+
+.hbt-main {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 18vw, 17rem);
+  line-height: 1;
+  letter-spacing: .06em;
+  display: block;
+  background: linear-gradient(90deg, #ffb3bb 0%, #ff6b7a 20%, #ff3d50 45%, #e01c2c 70%, #8c0d1a 100%);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation:
+    hbt-reveal 1s cubic-bezier(.22,1,.36,1) .2s both,
+    hbt-shimmer 6s ease-in-out 1.4s infinite;
+}
+
+.hbt-ver {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.8rem, 7vw, 6.5rem);
+  line-height: 1;
+  letter-spacing: .5em;
+  padding-left: .5em; /* optical compensation for letter-spacing */
+  color: rgba(255,61,80,.32);
+  animation: hbt-reveal 1s cubic-bezier(.22,1,.36,1) .5s both;
+}
+
+@keyframes hbt-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hbt-shimmer {
+  0%   { background-position: 100% 50%; }
+  50%  { background-position:   0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 
 /* ══════════════════════════════════════════
@@ -1199,6 +1224,9 @@ footer {
   .event-actions { flex-direction: column; }
   .event-btn { min-width: unset; }
   .presents-line { max-width: 36px; }
+  /* hero title on small phones */
+  .hbt-main { font-size: clamp(3.2rem, 20vw, 4.8rem); letter-spacing: .03em; }
+  .hbt-ver  { font-size: clamp(1.4rem, 10vw, 2.2rem); letter-spacing: .35em; padding-left: .35em; }
 }
 
 .footer-logo-img {
