@@ -1208,3 +1208,350 @@ footer {
   margin: 0 auto 16px auto; /* Centers the image horizontally and adds space below */
   object-fit: contain; /* Ensures the logo isn't stretched or distorted */
 }
+
+/* ══════════════════════════════════════════
+    SCHEDULE / CIRCUIT
+══════════════════════════════════════════ */
+#schedule { background: #060608; padding-top: 52px; padding-bottom: 52px; }
+#schedule .section-header { margin-bottom: 30px; }
+
+.circuit-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Faint outer oval track border */
+.circuit-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(255,61,80,.1);
+  border-radius: 220px;
+  pointer-events: none;
+}
+
+/* ── Start / Finish banners ── */
+.circuit-banner {
+  display: flex;
+  align-items: stretch;
+  border-top: 2px solid rgba(255,61,80,.55);
+  border-bottom: 2px solid rgba(255,61,80,.55);
+  background: rgba(10,10,10,.85);
+  overflow: hidden;
+}
+
+.circuit-banner--finish {
+  border-top-color: rgba(140,13,26,.7);
+  border-bottom-color: rgba(140,13,26,.7);
+}
+
+/* Checkered blocks */
+.circuit-chk-block {
+  flex-shrink: 0;
+  width: 72px;
+  background:
+    repeating-conic-gradient(#e8e8e8 0% 25%, #1a1a1a 0% 50%)
+    0 0 / 18px 18px;
+  opacity: .75;
+  min-height: 38px;
+}
+
+.circuit-banner-inner {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 8px 24px;
+}
+
+.circuit-banner-txt {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: .22em;
+  color: var(--white);
+}
+
+/* Race car SVG */
+.circuit-car {
+  width: 36px;
+  height: auto;
+  filter: drop-shadow(0 0 8px rgba(255,61,80,.5));
+  animation: car-idle .9s ease-in-out infinite alternate;
+}
+
+@keyframes car-idle {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-3px); }
+}
+
+/* ── Day headers ── */
+.circuit-day-headers {
+  display: flex;
+  align-items: flex-end;
+  background: rgba(8,8,10,.6);
+}
+
+.circuit-day-hdr {
+  flex: 1;
+  padding: 12px 24px 8px;
+}
+
+.circuit-day-hdr--1 { text-align: right; border-right: 3px solid rgba(255,61,80,.45); }
+.circuit-day-hdr--2 { text-align: left;  border-left:  3px solid rgba(255,61,80,.45); }
+
+.circuit-center-hdr { width: 64px; flex-shrink: 0; }
+
+.circuit-day-num {
+  display: block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem;
+  line-height: 1;
+  background: var(--grad);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: grad-flow 4s ease infinite;
+}
+
+.circuit-day-sub {
+  display: block;
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+/* ── Main track body ── */
+.circuit-track {
+  display: flex;
+  background: #080808;
+}
+
+/* ── Day columns ── */
+.circuit-day {
+  flex: 1;
+  padding: 4px 0;
+}
+
+.circuit-day--1 { border-right: 3px solid rgba(255,61,80,.45); }
+.circuit-day--2 { border-left:  3px solid rgba(255,61,80,.45); }
+
+/* ── Stop rows ── */
+.circuit-stop {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  position: relative;
+}
+
+.circuit-day--1 .circuit-stop {
+  flex-direction: row;
+  padding-left: 20px;
+  gap: 12px;
+}
+
+.circuit-day--2 .circuit-stop {
+  flex-direction: row;
+  padding-right: 20px;
+  gap: 12px;
+}
+
+/* ── Pip (track marker dot) ── */
+.circuit-pip {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--red);
+  border: 2px solid #ff3d50;
+  box-shadow: 0 0 8px rgba(255,61,80,.65), 0 0 20px rgba(255,61,80,.25);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+  transition: transform .2s, box-shadow .2s;
+}
+
+/* Pip sits ON the track border */
+.circuit-day--1 .circuit-pip { margin-right: -9px; }
+.circuit-day--2 .circuit-pip { margin-left:  -9px; }
+
+.circuit-stop:hover .circuit-pip {
+  transform: scale(1.5);
+  box-shadow: 0 0 14px rgba(255,61,80,.9), 0 0 36px rgba(255,61,80,.45);
+}
+
+/* Connector line from pip toward card */
+.circuit-day--1 .circuit-pip::before {
+  content: '';
+  position: absolute;
+  right: calc(100% + 2px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 2px;
+  background: linear-gradient(to left, rgba(255,61,80,.7), transparent);
+}
+
+.circuit-day--2 .circuit-pip::after {
+  content: '';
+  position: absolute;
+  left: calc(100% + 2px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 2px;
+  background: linear-gradient(to right, rgba(255,61,80,.7), transparent);
+}
+
+/* ── Event cards ── */
+.circuit-card {
+  background: var(--grey);
+  border: 1px solid var(--grey2);
+  border-radius: 8px;
+  padding: 6px 12px;
+  flex: 1;
+  min-width: 0;
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+
+.circuit-card--left { text-align: right; }
+.circuit-card--right { text-align: left; }
+
+.circuit-stop:hover .circuit-card {
+  border-color: rgba(255,61,80,.45);
+  box-shadow: 0 4px 18px rgba(255,61,80,.14);
+}
+
+.circuit-day--1 .circuit-stop:hover .circuit-card { transform: translateX(-3px); }
+.circuit-day--2 .circuit-stop:hover .circuit-card { transform: translateX(3px);  }
+
+.circuit-time {
+  display: block;
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--red-lt);
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.circuit-ename {
+  display: block;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.08rem;
+  letter-spacing: .05em;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Center road ── */
+.circuit-center {
+  width: 64px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.circuit-road {
+  position: absolute;
+  inset: 0;
+  background: #0d0d10;
+  border-left:  2px solid rgba(255,61,80,.14);
+  border-right: 2px solid rgba(255,61,80,.14);
+  overflow: hidden;
+}
+
+.circuit-road-dashes {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 200%;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,.18) 0px,
+    rgba(255,255,255,.18) 20px,
+    transparent 20px,
+    transparent 40px
+  );
+  animation: circuit-dash-scroll .9s linear infinite;
+}
+
+@keyframes circuit-dash-scroll {
+  from { transform: translateX(-50%) translateY(0); }
+  to   { transform: translateX(-50%) translateY(40px); }
+}
+
+/* ── Finish line ── */
+.circuit-finishline { /* inherits .reveal */ }
+
+/* ── Responsive: scale down — never stack columns ── */
+@media (max-width: 640px) {
+  .circuit-wrap::before { display: none; }
+
+  /* Banner */
+  .circuit-chk-block   { width: 44px; min-height: 44px; }
+  .circuit-banner-inner { padding: 8px 12px; gap: 10px; }
+  .circuit-banner-txt  { font-size: .95rem; letter-spacing: .14em; }
+  .circuit-car         { width: 28px; }
+
+  /* Day headers — keep side by side, shrink */
+  .circuit-day-hdr       { padding: 14px 12px 10px; }
+  .circuit-center-hdr    { width: 44px; }
+  .circuit-day-num       { font-size: 2.2rem; }
+  .circuit-day-sub       { font-size: .55rem; letter-spacing: .16em; }
+
+  /* Track — keep side by side, shrink center */
+  .circuit-center        { width: 44px; }
+
+  /* Stops */
+  .circuit-stop          { padding: 10px 0; }
+  .circuit-day--1 .circuit-stop { padding-left: 10px; gap: 8px; }
+  .circuit-day--2 .circuit-stop { padding-right: 10px; gap: 8px; }
+
+  /* Pip */
+  .circuit-pip           { width: 11px; height: 11px; }
+  .circuit-day--1 .circuit-pip { margin-right: -8px; }
+  .circuit-day--2 .circuit-pip { margin-left:  -8px; }
+
+  /* Cards */
+  .circuit-card          { padding: 7px 10px; }
+  .circuit-time          { font-size: .6rem; }
+  .circuit-ename         { font-size: .9rem; }
+
+  /* No hover shifts on touch */
+  .circuit-day--1 .circuit-stop:hover .circuit-card,
+  .circuit-day--2 .circuit-stop:hover .circuit-card { transform: none; }
+}
+
+/* Extra-small phones (≤ 420px) — shrink further */
+@media (max-width: 420px) {
+  .circuit-chk-block    { width: 30px; min-height: 38px; }
+  .circuit-banner-inner { padding: 7px 8px; gap: 7px; }
+  .circuit-banner-txt   { font-size: .78rem; letter-spacing: .09em; }
+  .circuit-car          { width: 22px; }
+
+  .circuit-day-hdr      { padding: 10px 8px 8px; }
+  .circuit-center-hdr   { width: 32px; }
+  .circuit-day-num      { font-size: 1.7rem; }
+  .circuit-day-sub      { font-size: .5rem; letter-spacing: .12em; }
+
+  .circuit-center       { width: 32px; }
+
+  .circuit-day--1 .circuit-stop { padding-left: 6px; gap: 5px; }
+  .circuit-day--2 .circuit-stop { padding-right: 6px; gap: 5px; }
+
+  .circuit-pip          { width: 9px; height: 9px; }
+  .circuit-day--1 .circuit-pip { margin-right: -6px; }
+  .circuit-day--2 .circuit-pip { margin-left:  -6px; }
+
+  .circuit-card         { padding: 5px 7px; border-radius: 5px; }
+  .circuit-time         { font-size: .55rem; letter-spacing: .06em; margin-bottom: 1px; }
+  .circuit-ename        { font-size: .8rem; }
+}
