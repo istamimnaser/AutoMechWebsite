@@ -222,6 +222,7 @@ body {
 .logo-ph:hover { border-color: rgba(224,28,44,.7); }
 .logo-ph svg { opacity: .28; flex-shrink: 0; }
 
+
 .logo-ph-nav {
   height: 38px;
   min-width: 136px;
@@ -235,7 +236,7 @@ body {
 }
 
 .logo-ph-society {
-  width: 112px; height: 112px;
+  width: 12px; height: 112px;
   margin: 0 auto;
   padding: 14px;
   border-radius: 50%;
@@ -285,7 +286,7 @@ nav::after {
 }
 
 .nav-logo-link { text-decoration: none; display: flex; align-items: center; }
-.nav-logo-img  { height: 38px; width: auto; display: block; }
+.nav-logo-img  { height: 64px; width: auto; display: block; }
 
 .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
 .nav-links a {
