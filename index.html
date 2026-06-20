@@ -3,44 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AutoMech 2.0 </title>
+  <title>AutoMech 2.0</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="AutoMechLogo.png" />
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="icon" type="image/png" href="/AutoMechLogo.png" />
 </head>
 <body>
 
 <div class="scroll-progress" id="scrollProgress"></div>
 
 <nav>
-  <a href="#hero" class="nav-logo-link">
-  <img src="AutoMechLogo.png" alt="AutoMech 2.0" class="nav-logo-img" />
-</a>
+  <a href="/" class="nav-logo-link">
+    <img src="/AutoMechLogo.png" alt="AutoMech 2.0" class="nav-logo-img" />
+  </a>
 
   <ul class="nav-links">
-    <li><a href="#events">Events</a></li>
-    <li><a href="#schedule">Schedule</a></li>
-    <li><a href="#gallery">Gallery</a></li>
-    <li><a href="#sponsors">Sponsors</a></li>
-    <li><a href="#connect">Connect</a></li>
-    <li><a href="#events" class="nav-cta">Register Now</a></li>
+    <li><a href="/#events">Events</a></li>
+    <li><a href="/#schedule">Schedule</a></li>
+    <li><a href="/#gallery">Gallery</a></li>
+    <li><a href="/#sponsors">Sponsors</a></li>
+    <li><a href="/#connect">Connect</a></li>
+    <li><a href="/#events" class="nav-cta">Register Now</a></li>
     <li><a href="/about">About</a></li>
-    
   </ul>
+
   <button class="nav-burger" id="navBurger" aria-label="Toggle menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
 <div class="mobile-nav" id="mobileNav">
-  <a href="#events"    onclick="closeMobileNav()">Events</a>
-  <a href="#schedule"  onclick="closeMobileNav()">Schedule</a>
-  <a href="#gallery"  onclick="closeMobileNav()">Gallery</a>
-  <a href="#sponsors" onclick="closeMobileNav()">Sponsors</a>
-  <a href="#connect"  onclick="closeMobileNav()">Connect</a>
-  <a href="#events" onclick="closeMobileNav()" class="mob-cta">Register Now</a>
+  <a href="/#events" onclick="closeMobileNav()">Events</a>
+  <a href="/#schedule" onclick="closeMobileNav()">Schedule</a>
+  <a href="/#gallery" onclick="closeMobileNav()">Gallery</a>
+  <a href="/#sponsors" onclick="closeMobileNav()">Sponsors</a>
+  <a href="/#connect" onclick="closeMobileNav()">Connect</a>
+  <a href="/#events" onclick="closeMobileNav()" class="mob-cta">Register Now</a>
+  <a href="/about" onclick="closeMobileNav()">About</a>
 </div>
 
 <div id="main-container"></div>
@@ -51,41 +52,63 @@
 <div id="connect-container"></div>
 <div id="tailer-container"></div>
 
-<script src="script.js"></script>
+<script src="/script.js"></script>
 
 <script>
-  async function loadSiteComponents() {
-    const sections = [
-      { id: 'main-container', file: 'main.html' },
-      { id: 'events-container',   file: 'events.html'   },
-      { id: 'schedule-container', file: 'schedule.html' },
-      { id: 'highlight-container', file: 'highlight.html' },
-      { id: 'connect-container', file: 'connect.html' },
-      { id: 'tailer-container', file: 'tailer.html' }
-    ];
+  async function injectSection(id, file) {
+    const container = document.getElementById(id);
+    if (!container) return;
 
-    // Load main sections sequentially
-    for (const section of sections) {
-      const response = await fetch(section.file);
-      const html = await response.text();
-      document.getElementById(section.id).innerHTML = html;
-    }
-
-    // Load the isolated countdown into the main/hero section (if element exists)
-    const cdInjector = document.getElementById('countdown-injector');
-    if (cdInjector) {
-      const cdResponse = await fetch('countDown.html');
-      const cdHtml = await cdResponse.text();
-      cdInjector.innerHTML = cdHtml;
-    }
-
-    // Initialize all logic after DOM is fully constructed
-    if (typeof initWebsite === 'function') {
-      initWebsite();
+    try {
+      const response = await fetch(file, { cache: 'no-cache' });
+      if (!response.ok) throw new Error(`${file} returned ${response.status}`);
+      container.innerHTML = await response.text();
+    } catch (error) {
+      console.error(`Could not load ${file}:`, error);
+      container.innerHTML = '';
     }
   }
 
-  loadSiteComponents();
+  async function loadSiteComponents() {
+    const sections = [
+      { id: 'main-container', file: '/main.html' },
+      { id: 'events-container', file: '/events.html' },
+      { id: 'schedule-container', file: '/schedule.html' },
+      { id: 'highlight-container', file: '/highlight.html' },
+      { id: 'sponsors-container', file: '/sponsors.html' },
+      { id: 'connect-container', file: '/connect.html' },
+      { id: 'tailer-container', file: '/tailer.html' }
+    ];
+
+    for (const section of sections) {
+      await injectSection(section.id, section.file);
+    }
+
+    const cdInjector = document.getElementById('countdown-injector');
+    if (cdInjector) {
+      try {
+        const cdResponse = await fetch('/countDown.html', { cache: 'no-cache' });
+        if (!cdResponse.ok) throw new Error(`/countDown.html returned ${cdResponse.status}`);
+        cdInjector.innerHTML = await cdResponse.text();
+      } catch (error) {
+        console.error('Could not load countdown:', error);
+      }
+    }
+
+    if (typeof initWebsite === 'function') {
+      initWebsite();
+    }
+
+    // When coming from /about links like /#events, wait until sections load, then scroll.
+    if (window.location.hash) {
+      const target = document.querySelector(window.location.hash);
+      if (target) {
+        setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadSiteComponents);
 </script>
 </body>
 </html>
