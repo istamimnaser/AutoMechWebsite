@@ -444,11 +444,13 @@
 
   /* â”€â”€ Slideshows â”€â”€ */
   document.querySelectorAll('.project-slideshow').forEach(ss => {
-    const track  = ss.querySelector('.ss-track');
     const slides = ss.querySelectorAll('.ss-slide');
     const dotsEl = ss.querySelector('.ss-dots');
     let current  = 0;
     let timer;
+
+    /* Activate first slide */
+    slides[0].classList.add('active');
 
     /* Build dots */
     slides.forEach((_, i) => {
@@ -460,8 +462,9 @@
     });
 
     function goTo(n) {
+      slides[current].classList.remove('active');
       current = (n + slides.length) % slides.length;
-      track.style.transform = `translateX(-${current * 100}%)`;
+      slides[current].classList.add('active');
       dotsEl.querySelectorAll('.ss-dot').forEach((d, i) =>
         d.classList.toggle('active', i === current));
     }
