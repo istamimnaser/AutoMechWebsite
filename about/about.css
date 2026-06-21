@@ -983,7 +983,7 @@ nav::after {
 
 .magazine-cover {
   width: 280px;
-  height: 300px;
+  aspect-ratio: 3 / 4;
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--grey2);
@@ -996,6 +996,11 @@ nav::after {
   transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s;
 }
 
+.magazine-cover img {
+  position: relative;
+  z-index: 1;
+}
+
 .magazine-cover:hover {
   transform: perspective(800px) rotateY(-6deg) translateY(-4px);
   box-shadow:
@@ -1006,14 +1011,15 @@ nav::after {
 .magazine-cover img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center center;
   display: block;
 }
 
 /* Placeholder state */
 .cover-placeholder {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1031,6 +1037,7 @@ nav::after {
   color: var(--grey3);
   padding: 24px;
   text-align: center;
+  z-index: 0;
 }
 
 .cover-placeholder svg { opacity: .45; color: var(--red-lt); }
@@ -1090,7 +1097,7 @@ nav::after {
 
 @media (max-width: 768px) {
   .magazine-section { padding: 64px 20px; }
-  .magazine-cover { width: 200px; height: 268px; }
+  .magazine-cover { width: 200px; }
 }
 
 /* ══════════════════════════════════════════
