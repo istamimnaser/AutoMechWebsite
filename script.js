@@ -54,6 +54,30 @@ window.initWebsite = function() {
     });
   }, 800);
 
+  /* ── Prize Money Count-Up ── */
+  const prizeEls = document.querySelectorAll('.event-prize[data-prize-target]');
+  const prizeObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el       = entry.target;
+      const target   = parseInt(el.dataset.prizeTarget, 10) || 0;
+      const numEl    = el.querySelector('.prize-amount');
+      const duration = 1400;
+      const start    = performance.now();
+
+      function tick(now) {
+        const p     = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3); // ease-out-cubic
+        numEl.textContent = Math.round(target * eased).toLocaleString('en-US');
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      prizeObs.unobserve(el);
+    });
+  }, { threshold: 0.4 });
+
+  prizeEls.forEach(el => prizeObs.observe(el));
+
   /* ── Button Ripple ── */
   document.querySelectorAll('.btn, .event-btn').forEach(btn => {
     btn.addEventListener('click', function(e) {
