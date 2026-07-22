@@ -55,7 +55,7 @@ window.initWebsite = function() {
   }, 800);
 
   /* ── Prize Money Count-Up ── */
-  const prizeEls = document.querySelectorAll('.event-prize[data-prize-target]');
+  const prizeEls = document.querySelectorAll('[data-prize-target]');
   const prizeObs = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
